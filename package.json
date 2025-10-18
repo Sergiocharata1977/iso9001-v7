@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy": "bash deploy.sh",
+    "deploy:prod": "npm run build && npm start"
   },
   "dependencies": {
     "react": "^18.2.0",
@@ -27,4 +29,3 @@
     "eslint-config-next": "14.2.0"
   }
 }
-

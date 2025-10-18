@@ -1,0 +1,47 @@
+name: 🚀 Deploy Automático 9001APP v7
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📦 Checkout del código
+      uses: actions/checkout@v4
+      
+    - name: 🔧 Configurar Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+        
+    - name: 📥 Instalar dependencias
+      run: npm ci
+      
+    - name: 🧪 Ejecutar tests (cuando estén disponibles)
+      run: npm test --if-present
+      
+    - name: 🔨 Build del proyecto
+      run: npm run build
+      
+    - name: 🚀 Deploy al servidor VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          cd /var/www/9001app-v7
+          git pull origin main
+          npm install
+          npm run build
+          pm2 restart 9001app-v7 || pm2 start npm --name "9001app-v7" -- start
+          
+    - name: ✅ Notificar deploy exitoso
+      if: success()
+      run: echo "🎉 Deploy completado exitosamente"
