@@ -17,8 +17,10 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    // Buscar usuario por email
-    const user = await User.findOne({ email }).select('+password');
+    // Buscar usuario por email (la organización se detecta automáticamente)
+    const user = await User.findOne({ 
+      email
+    }).select('+password');
     
     if (!user) {
       return NextResponse.json(
@@ -59,18 +61,24 @@ export async function POST(request: NextRequest) {
     
     // Respuesta sin contraseña
     const userResponse = {
-      id: user._id,
+      _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
       organization_id: user.organization_id,
-      is_active: user.is_active
+      is_active: user.is_active,
+      created_at: user.created_at,
+      updated_at: user.updated_at
     };
     
     return NextResponse.json({
       success: true,
       user: userResponse,
-      token
+      token,
+      organization: {
+        id: user.organization_id,
+        name: getOrganizationName(user.organization_id)
+      }
     });
     
   } catch (error) {
@@ -80,5 +88,15 @@ export async function POST(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+function getOrganizationName(orgId: string): string {
+  const orgNames: { [key: string]: string } = {
+    'org-001': 'TechCorp SA',
+    'org-002': 'Agro Solutions',
+    'org-003': 'Industrias del Sur',
+    'org-004': 'Consultora Norte'
+  }
+  return orgNames[orgId] || orgId
 }
 
