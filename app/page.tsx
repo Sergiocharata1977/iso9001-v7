@@ -44,10 +44,10 @@ export default function Home() {
         </div>
 
         {/* Próximos Pasos */}
-        <div className="bg-blue-500 text-white rounded-lg p-6">
-          <h3 className="text-lg font-semibold mb-2">📋 Próximos Pasos</h3>
+        <div className="bg-green-500 text-white rounded-lg p-6">
+          <h3 className="text-lg font-semibold mb-2">🚀 Deploy Automático Configurado</h3>
           <p className="text-sm opacity-90">
-            Entregable 2: Configurar conexión MongoDB Atlas
+            GitHub Actions → VPS funcionando correctamente
           </p>
         </div>
 
