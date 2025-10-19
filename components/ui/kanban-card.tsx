@@ -19,17 +19,19 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   showActions = true,
   customRenderer
 }) => {
-  const dragRef = useKanbanDrag({
-    itemId: item.id,
-    columnId: item.columnId,
-    item,
-    onDragStart: () => {
-      // Callback opcional para drag start
-    },
-    onDragEnd: () => {
-      // Callback opcional para drag end
+  const { onDragStart, onDragEnd } = useKanbanDrag();
+
+  const handleDragStart = (e: React.DragEvent) => {
+    if (!readOnly) {
+      onDragStart(e, { id: item.id, type: 'kanban-card', ...item });
     }
-  });
+  };
+
+  const handleDragEnd = () => {
+    if (!readOnly) {
+      onDragEnd();
+    }
+  };
 
   const handleClick = () => {
     onClick?.(item);
@@ -37,12 +39,12 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
   const handleEdit = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onEdit?.(item);
+    onEdit?.(item.id);
   };
 
   const handleDelete = (e: React.MouseEvent) => {
     e.stopPropagation();
-    onDelete?.(item);
+    onDelete?.(item.id);
   };
 
   const getPriorityColor = (priority?: string) => {
@@ -61,7 +63,9 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
   return (
     <motion.div
-      ref={dragRef}
+      draggable={!readOnly}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
       layout
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}
