@@ -36,11 +36,49 @@ jobs:
         username: ${{ secrets.VPS_USER }}
         key: ${{ secrets.VPS_SSH_KEY }}
         script: |
+          echo "🚀 Iniciando deploy automático..."
           cd /var/www/9001app-v7
+          
+          # Verificar que el directorio existe
+          if [ ! -d "/var/www/9001app-v7" ]; then
+            echo "❌ Directorio del proyecto no existe. Ejecutando configuración inicial..."
+            mkdir -p /var/www/9001app-v7
+            cd /var/www/9001app-v7
+            git clone https://github.com/Sergiocharata1977/iso9001-v7.git .
+          fi
+          
+          # Actualizar código
+          echo "📦 Actualizando código desde GitHub..."
           git pull origin main
+          
+          # Instalar dependencias
+          echo "📥 Instalando dependencias..."
           npm install
+          
+          # Crear .env si no existe
+          if [ ! -f ".env" ]; then
+            echo "⚙️ Creando archivo .env..."
+            cat > .env << EOF
+          PORT=3000
+          NODE_ENV=production
+          MONGO_URI=mongodb+srv://9001app:admin123@9001app-v6.xxxxx.mongodb.net/9001app-v7?retryWrites=true&w=majority
+          JWT_SECRET=your_jwt_secret_here_change_in_production
+          JWT_EXPIRES_IN=24h
+          FRONTEND_URL=http://31.97.162.229:3000
+          EOF
+          fi
+          
+          # Build del proyecto
+          echo "🔨 Construyendo proyecto..."
           npm run build
-          pm2 restart 9001app-v7 || pm2 start npm --name "9001app-v7" -- start
+          
+          # Reiniciar aplicación con PM2
+          echo "🔄 Reiniciando aplicación..."
+          pm2 delete 9001app-v7 2>/dev/null || true
+          pm2 start npm --name "9001app-v7" -- start
+          pm2 save
+          
+          echo "✅ Deploy completado exitosamente!"
           
     - name: ✅ Notificar deploy exitoso
       if: success()
