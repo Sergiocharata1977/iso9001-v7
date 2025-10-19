@@ -1,0 +1,25 @@
+name: 🔍 Test SSH Connection
+
+on:
+  workflow_dispatch: # Solo se ejecuta manualmente
+
+jobs:
+  test-ssh:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🔍 Test SSH connection to VPS
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        script: |
+          echo "🚀 SSH Connection successful!"
+          echo "📅 Current date: $(date)"
+          echo "📍 Current directory: $(pwd)"
+          echo "👤 Current user: $(whoami)"
+          echo "💾 Disk usage: $(df -h /)"
+          echo "🔧 Node.js version: $(node --version)"
+          echo "📦 npm version: $(npm --version)"
+          echo "🔍 PM2 status: $(pm2 status || echo 'PM2 not running')"
