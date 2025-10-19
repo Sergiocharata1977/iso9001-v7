@@ -7,7 +7,7 @@ echo "🚀 Iniciando deploy de 9001APP v7..."
 
 # Configuración del servidor
 SERVER_USER="root"
-SERVER_HOST="tu-servidor.com"
+SERVER_HOST="31.97.162.229"
 SERVER_PATH="/var/www/9001app-v7"
 GITHUB_REPO="https://github.com/Sergiocharata1977/iso9001-v7.git"
 
@@ -38,4 +38,4 @@ ssh $SERVER_USER@$SERVER_HOST << EOF
     echo "✅ Deploy completado exitosamente"
 EOF
 
-echo "🎉 Deploy finalizado. Verifica en: http://tu-servidor.com"
+echo "🎉 Deploy finalizado. Verifica en: http://31.97.162.229:3000"
