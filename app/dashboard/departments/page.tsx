@@ -39,7 +39,7 @@ export default function DepartmentsPage() {
   // Cargar datos iniciales
   useEffect(() => {
     loadDepartments();
-  }, []);
+  }, [loadDepartments]);
 
   const loadDepartments = async () => {
     setIsLoading(true);

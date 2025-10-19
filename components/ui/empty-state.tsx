@@ -45,7 +45,6 @@ export function EmptyProcesses({ onCreateProcess }: { onCreateProcess: () => voi
     <EmptyState
       title="No hay procesos"
       description="Comienza creando tu primer proceso para organizar tu trabajo."
-      icon={<Plus className="h-12 w-12 text-gray-400" />}
       action={
         <Button onClick={onCreateProcess}>
           <Plus className="h-4 w-4 mr-2" />
@@ -62,7 +61,8 @@ export function EmptyRecords({ onCreateRecord }: { onCreateRecord: () => void })
       title="No hay registros"
       description="Agrega el primer registro a este proceso."
       action={
-        <Button onClick={onCreateRecord} icon={<Plus className="h-4 w-4" />}>
+        <Button onClick={onCreateRecord}>
+          <Plus className="h-4 w-4 mr-2" />
           Agregar Registro
         </Button>
       }
