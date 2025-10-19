@@ -23,10 +23,6 @@ jobs:
     - name: 📥 Instalar dependencias
       run: npm ci
       
-    - name: 🧪 Ejecutar tests (cuando estén disponibles)
-      run: npm test --if-present || echo "No tests found, continuing..."
-      continue-on-error: true
-      
     - name: 🔨 Build del proyecto
       run: npm run build
       

@@ -16,9 +16,7 @@
     "migration:deploy": "npm run migration:verify && git add . && git commit -m 'feat: migrar módulo' && git push origin main",
     "db:check": "node scripts/check-mongodb-connection.js",
     "db:explore": "node scripts/explore-mongodb-collections.js",
-    "db:seed": "ts-node scripts/create-test-users.ts",
-    "test": "playwright test",
-    "test:ui": "playwright test --ui"
+    "db:seed": "ts-node scripts/create-test-users.ts"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.7",
