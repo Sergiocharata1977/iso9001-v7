@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { dbConnect } from '@/lib/dbConnect';
 import { User } from '@/models/User';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
+import jwt, { SignOptions } from 'jsonwebtoken';
 
 export async function POST(request: NextRequest) {
   try {
@@ -45,13 +45,13 @@ export async function POST(request: NextRequest) {
     // Generar JWT
     const token = jwt.sign(
       { 
-        userId: user._id, 
+        userId: user._id.toString(), 
         email: user.email, 
         role: user.role,
         organization_id: user.organization_id 
       },
       process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
+      { expiresIn: '24h' }
     );
     
     // Respuesta sin contraseña
