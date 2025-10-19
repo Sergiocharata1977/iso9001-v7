@@ -1008,3 +1008,4 @@ _Este prompt fue generado para la migración específica de módulos RRHH de 900
 _Fecha: Octubre 2025_  
 _Versión: 1.0_
 
+

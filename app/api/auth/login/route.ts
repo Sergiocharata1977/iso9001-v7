@@ -48,16 +48,16 @@ export async function POST(request: NextRequest) {
     }
     
     // Generar JWT
-    const token = jwt.sign(
-      { 
-        userId: user._id, 
-        email: user.email, 
-        role: user.role,
-        organization_id: user.organization_id 
-      },
-      process.env.JWT_SECRET || 'fallback-secret',
-      { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
-    );
+    const payload = { 
+      userId: user._id.toString(), 
+      email: user.email, 
+      role: user.role,
+      organization_id: user.organization_id 
+    };
+    const secret = process.env.JWT_SECRET || 'fallback-secret';
+    const options = { expiresIn: '24h' };
+    
+    const token = jwt.sign(payload, secret, options);
     
     // Respuesta sin contraseña
     const userResponse = {
