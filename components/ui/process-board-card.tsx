@@ -82,7 +82,16 @@ const ProcessBoardCard = forwardRef<HTMLDivElement, ProcessBoardCardProps>(
                   {category}
                 </Badge>
               )}
-              <Badge variant={getStatusColor(status)}>
+              <Badge
+                variant="outline"
+                className={
+                  status === 'active'
+                    ? 'bg-green-100 text-green-700 border-green-200'
+                    : status === 'draft'
+                    ? 'bg-yellow-100 text-yellow-700 border-yellow-200'
+                    : 'bg-gray-100 text-gray-700 border-gray-200'
+                }
+              >
                 {getStatusText(status)}
               </Badge>
             </div>
