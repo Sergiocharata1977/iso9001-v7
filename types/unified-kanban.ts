@@ -21,11 +21,31 @@ export interface KanbanCardProps {
 }
 
 export interface KanbanColumnProps {
-  id: string;
-  title: string;
-  cards: KanbanCardProps[];
-  onCardMove?: (cardId: string, targetColumn: string) => void;
-  onCardAdd?: (columnId: string) => void;
+  // Compatibilidad con el componente KanbanColumn actual
+  column: {
+    id: string;
+    title: string;
+    color?: string;
+    maxItems?: number;
+    [key: string]: any;
+  };
+  items: KanbanCardProps['item'][];
+
+  // Callbacks a nivel de ítems
+  onItemMove: (itemId: string, sourceColumnId: string, targetColumnId: string, index: number) => void;
+  onItemClick?: (itemId: string) => void;
+  onItemEdit?: (itemId: string) => void;
+  onItemDelete?: (itemId: string) => void;
+
+  // UI flags y renderers
+  readOnly?: boolean;
+  showActions?: boolean;
+  customCardRenderer?: (item: KanbanCardProps['item']) => React.ReactNode;
+
+  // Drag state superficial para integración futura
+  draggedItem?: KanbanCardProps['item'] | null;
+  onDragStart?: (itemId: string) => void;
+  onDragEnd?: () => void;
 }
 
 export interface KanbanBoardProps {
