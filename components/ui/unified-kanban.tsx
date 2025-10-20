@@ -40,11 +40,10 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   showActions = true,
   customRenderer
 }) => {
-  const dragRef = useKanbanDrag({
-    itemId: item.id,
-    columnId: item.columnId,
-    item,
-  });
+  const handleEdit = () => onEdit?.(item.id);
+  const handleDelete = () => onDelete?.(item.id);
+  // TODO: Implementar drag-and-drop con Atlassian
+  // const { onDragStart, onDragEnd } = useKanbanDrag();
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('es-ES', {
@@ -65,7 +64,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
   // Si hay un renderer personalizado, usarlo
   if (customRenderer) {
     return (
-      <div ref={dragRef} className="cursor-grab active:cursor-grabbing">
+      <div className="">
         {customRenderer(item)}
       </div>
     );
@@ -75,8 +74,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
 
   return (
     <Card
-      ref={dragRef}
-      className="mb-3 cursor-grab active:cursor-grabbing transition-all hover:shadow-md group"
+      className="mb-3 transition-all hover:shadow-md group"
       onClick={() => onClick?.(item)}
     >
       <CardHeader className="pb-2">
@@ -113,15 +111,15 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={(e) => {
                   e.stopPropagation();
-                  onEdit?.(item);
+                  handleEdit();
                 }}>
                   <Edit className="mr-2 h-4 w-4" />
                   Editar
                 </DropdownMenuItem>
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   onClick={(e) => {
                     e.stopPropagation();
-                    onDelete?.(item);
+                    handleDelete();
                   }}
                   className="text-red-600"
                 >
@@ -140,7 +138,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({
           <div className="flex gap-1 flex-wrap">
             {item.priority && (
               <Badge 
-                variant="secondary" 
+                variant="outline" 
                 className={`text-xs ${priorityConfig[item.priority]?.color}`}
               >
                 {priorityConfig[item.priority]?.label}
@@ -218,15 +216,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
 }) => {
   const [isOver, setIsOver] = useState(false);
 
-  const dropRef = useKanbanDrop({
-    columnId: column.id,
-    column,
-    onDrop: (itemId, sourceColumnId, targetColumnId) => {
-      onDropItem?.(itemId, targetColumnId);
-    },
-    onDragOver: setIsOver,
-    disabled: readOnly || column.allowDrop === false
-  });
+  const { onDragOver, onDrop } = useKanbanDrop();
 
   const canAcceptMore = !column.maxItems || items.length < column.maxItems;
 
@@ -238,14 +228,15 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({
           style={{ backgroundColor: column.color || '#6B7280' }}
         />
         <h3 className="font-medium text-sm">{column.title}</h3>
-        <Badge variant="secondary" className="ml-auto">
+        <Badge variant="outline" className="ml-auto">
           {items.length}
           {column.maxItems && ` / ${column.maxItems}`}
         </Badge>
       </div>
       
       <div
-        ref={dropRef}
+        onDragOver={onDragOver}
+        onDrop={(e) => onDrop(e, column.id)}
         className={`min-h-32 transition-all rounded-lg ${
           isOver && canAcceptMore
             ? 'bg-blue-50 border-2 border-blue-300 border-dashed' 

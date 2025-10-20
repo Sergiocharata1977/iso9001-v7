@@ -126,11 +126,7 @@ export const DonCandidoProvider: React.FC<DonCandidoProviderProps> = ({
   return (
     <DonCandidoContext.Provider value={contextValue}>
       {children}
-      <DonCandidoChatComponent
-        position={position}
-        size={size}
-        autoHide={autoHide}
-      />
+      <DonCandidoChatComponent />
     </DonCandidoContext.Provider>
   );
 };

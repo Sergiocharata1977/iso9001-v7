@@ -73,7 +73,7 @@ export const KanbanColumn: React.FC<KanbanColumnProps> = ({
             {items.length}
           </Badge>
           {isAtLimit && (
-            <Badge variant="outline" className="text-xs text-orange-600 border-orange-300">
+            <Badge variant="outline" className="text-xs bg-orange-100 text-orange-700 border-orange-200">
               Límite
             </Badge>
           )}

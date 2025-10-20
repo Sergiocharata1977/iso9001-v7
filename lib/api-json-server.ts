@@ -103,8 +103,8 @@ export const processApi = {
     return {
       total: data.length,
       activos: data.filter(p => p.estado === 'activo').length,
-      inactivos: data.filter(p => p.estado === 'inactivo').length,
-      en_revision: data.filter(p => p.estado === 'en_revision').length,
+      inactivos: data.filter(p => p.estado === 'revision' || p.estado === 'obsoleto').length,
+      en_revision: data.filter(p => p.estado === 'revision').length,
     };
   },
 };
