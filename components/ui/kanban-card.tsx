@@ -6,7 +6,7 @@ import { Card, CardContent } from './card';
 import { Badge } from './badge';
 import { Button } from './button';
 import { Edit, Trash2, Calendar, User, Tag } from 'lucide-react';
-import { useKanbanDrag } from '@/hooks/useKanbanDrag';
+// import { useKanbanDrag } from '@/hooks/useKanbanDrag'; // TODO: Migrar drag-and-drop desde v6
 import { cn } from '@/lib/utils';
 import type { KanbanCardProps } from '@/types/unified-kanban';
 
@@ -19,19 +19,20 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
   showActions = true,
   customRenderer
 }) => {
-  const { onDragStart, onDragEnd } = useKanbanDrag();
+  // TODO: Migrar drag-and-drop desde v6 usando @atlaskit/pragmatic-drag-and-drop
+  // const { onDragStart, onDragEnd } = useKanbanDrag();
 
-  const handleDragStart = (e: React.DragEvent) => {
-    if (!readOnly) {
-      onDragStart(e, { id: item.id, type: 'kanban-card', ...item });
-    }
-  };
+  // const handleDragStart = (e: React.DragEvent) => {
+  //   if (!readOnly) {
+  //     onDragStart(e, { id: item.id, type: 'kanban-card', ...item });
+  //   }
+  // };
 
-  const handleDragEnd = () => {
-    if (!readOnly) {
-      onDragEnd();
-    }
-  };
+  // const handleDragEnd = () => {
+  //   if (!readOnly) {
+  //     onDragEnd();
+  //   }
+  // };
 
   const handleClick = () => {
     onClick?.(item);
@@ -63,9 +64,6 @@ export const KanbanCard: React.FC<KanbanCardProps> = ({
 
   return (
     <motion.div
-      draggable={!readOnly}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
       layout
       initial={{ opacity: 0, scale: 0.8 }}
       animate={{ opacity: 1, scale: 1 }}

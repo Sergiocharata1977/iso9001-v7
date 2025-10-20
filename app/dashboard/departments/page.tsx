@@ -36,11 +36,6 @@ export default function DepartmentsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  // Cargar datos iniciales
-  useEffect(() => {
-    loadDepartments();
-  }, [loadDepartments]);
-
   const loadDepartments = async () => {
     setIsLoading(true);
     try {
@@ -67,6 +62,12 @@ export default function DepartmentsPage() {
       setIsLoading(false);
     }
   };
+
+  // Cargar datos iniciales
+  useEffect(() => {
+    loadDepartments();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const stats: DepartmentStats[] = [
     {
