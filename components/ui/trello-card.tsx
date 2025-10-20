@@ -45,11 +45,12 @@ const TrelloCard = forwardRef<HTMLDivElement, TrelloCardProps>(
     onClick,
     ...props
   }, ref) => {
-    const priorityColors = {
-      low: 'success',
-      medium: 'warning',
-      high: 'destructive',
-      critical: 'destructive',
+    // Mapeo de prioridades a clases Tailwind (variant="outline" + className)
+    const priorityColorMap = {
+      low: 'bg-green-100 text-green-700 border-green-200',
+      medium: 'bg-yellow-100 text-yellow-700 border-yellow-200',
+      high: 'bg-red-100 text-red-700 border-red-200',
+      critical: 'bg-red-100 text-red-700 border-red-200',
     } as const;
 
     const isOverdue = dueDate && new Date(dueDate) < new Date();
@@ -118,7 +119,10 @@ const TrelloCard = forwardRef<HTMLDivElement, TrelloCardProps>(
 
             {/* Prioridad */}
             {priority && priority !== 'low' && (
-              <Badge variant={priorityColors[priority]}>
+              <Badge 
+                variant="outline" 
+                className={priorityColorMap[priority]}
+              >
                 {priority === 'critical' ? 'Crítica' :
                  priority === 'high' ? 'Alta' :
                  priority === 'medium' ? 'Media' : 'Baja'}
